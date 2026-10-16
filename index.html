@@ -9,6 +9,37 @@
 </head>
 <body>
 
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <div class="login-logo">🥚</div>
+        <p class="login-kicker">CHEREMO EGG DEPOT</p>
+        <h1 id="authTitle">Welcome back</h1>
+        <p id="authDescription" class="muted">Sign in to access your business dashboard.</p>
+
+        <form id="authForm">
+            <label for="authUsername">Username</label>
+            <input id="authUsername" type="text" value="japhet" autocomplete="username" readonly>
+
+            <label for="authPassword">Password</label>
+            <input id="authPassword" type="password" autocomplete="current-password"
+                   placeholder="Enter your password" required>
+
+            <div id="confirmPasswordWrap" hidden>
+                <label for="authConfirmPassword">Confirm password</label>
+                <input id="authConfirmPassword" type="password" autocomplete="new-password"
+                       placeholder="Enter the password again">
+            </div>
+
+            <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+            <button id="authSubmit" type="submit" class="primary-btn login-submit">Sign In</button>
+        </form>
+
+        <p class="login-footnote">Basic device privacy protection.</p>
+    </div>
+</div>
+
+<div id="protectedApp" hidden>
+
 <header class="topbar">
     <div>
         <h1>🥚 Cheremo Egg Depot</h1>
@@ -24,9 +55,7 @@
             <h2>Business Dashboard</h2>
             <p>Manage your stock, record sales and plan your next delivery.</p>
         </div>
-        <button type="button" id="clearRecordsBtn" class="danger-btn">
-            Clear All Records
-        </button>
+        <button type="button" id="clearRecordsBtn" class="danger-btn">Clear All Records</button>
     </section>
 
     <section class="stats">
@@ -57,16 +86,13 @@
         <p class="muted">Set your prices and the stock level you want to maintain.</p>
 
         <form id="settingsForm" class="form-grid">
-            <label>
-                Selling price per tray (KSh)
+            <label>Selling price per tray (KSh)
                 <input type="number" id="sellPrice" min="0.01" step="0.01" required>
             </label>
-            <label>
-                Buying price per tray (KSh)
+            <label>Buying price per tray (KSh)
                 <input type="number" id="buyPrice" min="0" step="0.01" required>
             </label>
-            <label>
-                Target stock (full trays)
+            <label>Target stock (full trays)
                 <input type="number" id="targetTrays" min="1" step="1" required>
             </label>
             <div class="form-action">
@@ -78,14 +104,12 @@
     <section class="restock-panel">
         <h2>🚚 Automatic Restocking Calculator</h2>
         <p>See how many trays you need to order to reach your target stock.</p>
-
         <div class="restock-grid">
             <div><span>Current Stock</span><strong id="restockCurrent">30 trays</strong></div>
             <div><span>Target Stock</span><strong id="restockTarget">30 trays</strong></div>
             <div><span>Trays to Order</span><strong id="restockOrder">0 trays</strong></div>
             <div><span>Estimated Cost</span><strong id="restockCost">KSh 0</strong></div>
         </div>
-
         <p id="restockMessage" class="restock-message">Your stock is at the target level.</p>
         <button type="button" id="restockBtn" class="light-btn">Record Suggested Restock</button>
     </section>
@@ -165,17 +189,12 @@
                 <p class="muted">Based on recorded transactions.</p>
             </div>
         </div>
-
         <div class="summary-grid">
             <div><span>All-Time Sales</span><strong id="allSales">KSh 0</strong></div>
             <div><span>All-Time Purchases</span><strong id="allPurchases">KSh 0</strong></div>
             <div><span>All-Time Expenses</span><strong id="allExpenses">KSh 0</strong></div>
         </div>
-
-        <p class="muted note">
-            These figures show recorded totals. Purchases are deliveries received;
-            profit is calculated separately below.
-        </p>
+        <p class="muted note">Purchases are deliveries received; profit is calculated separately below.</p>
     </section>
 
     <section class="panel">
@@ -185,14 +204,12 @@
                 <p class="muted">Track sales revenue, cost of eggs sold, expenses and estimated profit.</p>
             </div>
         </div>
-
         <div class="summary-grid">
             <div><span>Total Sales Revenue</span><strong id="profitRevenue">KSh 0.00</strong></div>
             <div><span>Cost of Eggs Sold</span><strong id="profitCost">KSh 0.00</strong></div>
             <div><span>Business Expenses</span><strong id="profitExpenses">KSh 0.00</strong></div>
             <div><span>Estimated Net Profit</span><strong id="netProfit">KSh 0.00</strong></div>
         </div>
-
         <p id="profitNote" class="muted note">
             Estimated profit = sales revenue minus cost of eggs sold minus recorded expenses.
         </p>
@@ -206,16 +223,11 @@
             </div>
             <button type="button" id="exportBtn" class="secondary-btn">Export Backup</button>
         </div>
-
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
-                        <th>Date &amp; Time</th>
-                        <th>Type</th>
-                        <th>Details</th>
-                        <th>Quantity</th>
-                        <th>Amount</th>
+                        <th>Date &amp; Time</th><th>Type</th><th>Details</th><th>Quantity</th><th>Amount</th>
                     </tr>
                 </thead>
                 <tbody id="transactionsBody">
@@ -223,9 +235,7 @@
                 </tbody>
             </table>
         </div>
-
-        <label class="import-label">
-            Restore a backup file
+        <label class="import-label">Restore a backup file
             <input type="file" id="importFile" accept=".json,application/json">
         </label>
     </section>
@@ -235,6 +245,9 @@
 <footer>
     <p>© <span id="year"></span> Cheremo Egg Depot. Manage your business with confidence.</p>
 </footer>
+
+<button type="button" id="logoutBtn" class="logout-btn">Log Out</button>
+</div>
 
 <script src="script.js"></script>
 </body>
