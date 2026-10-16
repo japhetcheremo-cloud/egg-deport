@@ -1,3 +1,4 @@
+
 "use strict";
 
 const STORAGE_KEY = "cheremoEggDepotFreshV1";
@@ -7,8 +8,8 @@ function createInitialState() {
     return {
         stockEggs: 30 * EGGS_PER_TRAY,
         settings: {
-            sellPrice: 450,
-            buyPrice: 400,
+            sellPrice: 480,
+            buyPrice: 460,
             targetTrays: 30
         },
         transactions: []
@@ -21,9 +22,7 @@ function loadState() {
     try {
         const saved = localStorage.getItem(STORAGE_KEY);
 
-        if (!saved) {
-            return createInitialState();
-        }
+        if (!saved) return createInitialState();
 
         const parsed = JSON.parse(saved);
 
@@ -41,10 +40,7 @@ function loadState() {
             settings: {
                 sellPrice: Number(parsed.settings.sellPrice) || 450,
                 buyPrice: Number(parsed.settings.buyPrice) || 400,
-                targetTrays: Math.max(
-                    1,
-                    Number(parsed.settings.targetTrays) || 30
-                )
+                targetTrays: Math.max(1, Number(parsed.settings.targetTrays) || 30)
             },
             transactions: parsed.transactions
         };
@@ -92,7 +88,6 @@ function addTransaction(type, details, quantity, amount, extra = {}) {
         ...extra
     });
 
-    // Keep the latest 1,000 transactions.
     state.transactions = state.transactions.slice(0, 1000);
 }
 
@@ -111,36 +106,27 @@ function getUnitLabel(unit) {
 function getRestockPlan() {
     const targetEggs = state.settings.targetTrays * EGGS_PER_TRAY;
     const shortageEggs = Math.max(0, targetEggs - state.stockEggs);
-
-    // Order full trays only.
     const orderTrays = Math.ceil(shortageEggs / EGGS_PER_TRAY);
     const orderEggs = orderTrays * EGGS_PER_TRAY;
     const cost = orderTrays * state.settings.buyPrice;
 
-    return {
-        targetEggs,
-        shortageEggs,
-        orderTrays,
-        orderEggs,
-        cost
-    };
+    return { targetEggs, shortageEggs, orderTrays, orderEggs, cost };
 }
 
 function renderDashboard() {
-    const stockEggs = document.getElementById("stockEggs");
-    const stockTrays = document.getElementById("stockTrays");
-
-    stockEggs.textContent = state.stockEggs.toLocaleString("en-KE");
+    document.getElementById("stockEggs").textContent =
+        state.stockEggs.toLocaleString("en-KE");
 
     const fullTrays = Math.floor(state.stockEggs / EGGS_PER_TRAY);
     const looseEggs = state.stockEggs % EGGS_PER_TRAY;
 
-    stockTrays.textContent = `${fullTrays} full trays${looseEggs ? ` + ${looseEggs} eggs` : ""}`;
+    document.getElementById("stockTrays").textContent =
+        `${fullTrays} full trays${looseEggs ? ` + ${looseEggs} eggs` : ""}`;
 
     const today = getToday();
-    const todayTransactions = state.transactions.filter(transaction => {
-        return transaction.date && transaction.date.slice(0, 10) === today;
-    });
+    const todayTransactions = state.transactions.filter(transaction =>
+        transaction.date && transaction.date.slice(0, 10) === today
+    );
 
     const todaySales = todayTransactions
         .filter(transaction => transaction.type === "Sale")
@@ -148,7 +134,7 @@ function renderDashboard() {
 
     const todayDeliveries = todayTransactions
         .filter(transaction => transaction.type === "Delivery")
-        .reduce((sum, transaction) => sum + Number(transaction.quantity || 0), 0);
+        .reduce((sum, transaction) => sum + Number(transaction.trays || 0), 0);
 
     const todayExpenses = todayTransactions
         .filter(transaction => transaction.type === "Expense")
@@ -174,6 +160,50 @@ function renderDashboard() {
     document.getElementById("allSales").textContent = money(allSales);
     document.getElementById("allPurchases").textContent = money(allPurchases);
     document.getElementById("allExpenses").textContent = money(allExpenses);
+
+    // Profit and loss calculation.
+    const saleTransactions = state.transactions.filter(
+        transaction => transaction.type === "Sale"
+    );
+
+    const totalRevenue = saleTransactions.reduce(
+        (sum, transaction) => sum + Number(transaction.amount || 0),
+        0
+    );
+
+    const totalCostOfGoodsSold = saleTransactions.reduce((sum, transaction) => {
+        if (
+            transaction.costOfGoodsSold !== undefined &&
+            transaction.costOfGoodsSold !== null &&
+            Number.isFinite(Number(transaction.costOfGoodsSold))
+        ) {
+            return sum + Number(transaction.costOfGoodsSold);
+        }
+
+        // Older sales did not save their original cost.
+        const eggs = Number(transaction.eggs) || 0;
+        return sum + (eggs / EGGS_PER_TRAY) * state.settings.buyPrice;
+    }, 0);
+
+    const totalOperatingExpenses = state.transactions
+        .filter(transaction => transaction.type === "Expense")
+        .reduce((sum, transaction) => sum + Number(transaction.amount || 0), 0);
+
+    const estimatedProfit =
+        totalRevenue - totalCostOfGoodsSold - totalOperatingExpenses;
+
+    document.getElementById("profitRevenue").textContent = money(totalRevenue);
+    document.getElementById("profitCost").textContent = money(totalCostOfGoodsSold);
+    document.getElementById("profitExpenses").textContent = money(totalOperatingExpenses);
+
+    const profitElement = document.getElementById("netProfit");
+    profitElement.textContent = money(estimatedProfit);
+    profitElement.style.color = estimatedProfit < 0 ? "#dc2626" : "#15803d";
+
+    document.getElementById("profitNote").textContent =
+        "Estimated profit = sales revenue minus cost of eggs sold minus recorded expenses. " +
+        "Older sales without saved costs use the current buying price. " +
+        "Egg losses and other unrecorded costs are not included.";
 
     renderRestock();
     renderTransactions();
@@ -204,7 +234,6 @@ function renderRestock() {
     } else {
         message.textContent =
             `You need ${plan.orderTrays} full tray(s), containing ${plan.orderEggs} eggs, to reach or exceed your target.`;
-
         button.disabled = false;
         button.style.opacity = "1";
         button.style.cursor = "pointer";
@@ -255,7 +284,6 @@ function fillSettings() {
     document.getElementById("sellPrice").value = state.settings.sellPrice;
     document.getElementById("buyPrice").value = state.settings.buyPrice;
     document.getElementById("targetTrays").value = state.settings.targetTrays;
-
     document.getElementById("salePrice").value = state.settings.sellPrice;
     document.getElementById("deliveryPrice").value = state.settings.buyPrice;
     updateSalePreview();
@@ -326,11 +354,13 @@ document.getElementById("saleForm").addEventListener("submit", event => {
 
     const total = (eggs / EGGS_PER_TRAY) * price;
     const details = `${customer ? customer + " — " : ""}${quantity} ${getUnitLabel(unit)}`;
+    const costOfGoodsSold = (eggs / EGGS_PER_TRAY) * state.settings.buyPrice;
 
     state.stockEggs -= eggs;
     addTransaction("Sale", details, `-${eggs} eggs`, total, {
         eggs,
         unitPrice: price,
+        costOfGoodsSold,
         customer
     });
 
@@ -396,9 +426,7 @@ document.getElementById("lossForm").addEventListener("submit", event => {
         return;
     }
 
-    if (!confirm(`Record ${quantity} lost egg(s) due to: ${reason}?`)) {
-        return;
-    }
+    if (!confirm(`Record ${quantity} lost egg(s) due to: ${reason}?`)) return;
 
     state.stockEggs -= quantity;
     addTransaction("Loss", reason, `-${quantity} eggs`, 0, { eggs: quantity });
@@ -467,7 +495,6 @@ document.getElementById("restockBtn").addEventListener("click", () => {
     alert("Restock delivery recorded successfully.");
 });
 
-// CLEAR ALL RECORDS BUTTON
 document.getElementById("clearRecordsBtn").addEventListener("click", () => {
     const confirmed = confirm(
         "WARNING: This will permanently clear the sales, deliveries, " +

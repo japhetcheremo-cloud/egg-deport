@@ -12,7 +12,7 @@
 <header class="topbar">
     <div>
         <h1>🥚 Cheremo Egg Depot</h1>
-        <p>Egg Stock, Sales & Business Management</p>
+        <p>Egg Stock, Sales &amp; Business Management</p>
     </div>
     <span class="status">● System Ready</span>
 </header>
@@ -35,19 +35,16 @@
             <h2 id="stockEggs">900</h2>
             <small id="stockTrays">30 full trays</small>
         </article>
-
         <article class="stat-card">
             <span>💰 Today's Sales</span>
             <h2 id="todaySales">KSh 0</h2>
             <small>Recorded sales today</small>
         </article>
-
         <article class="stat-card">
             <span>📦 Today's Deliveries</span>
             <h2 id="todayDeliveries">0</h2>
             <small>Trays received today</small>
         </article>
-
         <article class="stat-card">
             <span>🧾 Today's Expenses</span>
             <h2 id="todayExpenses">KSh 0</h2>
@@ -62,22 +59,16 @@
         <form id="settingsForm" class="form-grid">
             <label>
                 Selling price per tray (KSh)
-                <input type="number" id="sellPrice" min="0.01"
-                       step="0.01" required>
+                <input type="number" id="sellPrice" min="0.01" step="0.01" required>
             </label>
-
             <label>
                 Buying price per tray (KSh)
-                <input type="number" id="buyPrice" min="0"
-                       step="0.01" required>
+                <input type="number" id="buyPrice" min="0" step="0.01" required>
             </label>
-
             <label>
                 Target stock (full trays)
-                <input type="number" id="targetTrays" min="1"
-                       step="1" required>
+                <input type="number" id="targetTrays" min="1" step="1" required>
             </label>
-
             <div class="form-action">
                 <button type="submit" class="primary-btn">Save Settings</button>
             </div>
@@ -89,146 +80,82 @@
         <p>See how many trays you need to order to reach your target stock.</p>
 
         <div class="restock-grid">
-            <div>
-                <span>Current Stock</span>
-                <strong id="restockCurrent">30 trays</strong>
-            </div>
-            <div>
-                <span>Target Stock</span>
-                <strong id="restockTarget">30 trays</strong>
-            </div>
-            <div>
-                <span>Trays to Order</span>
-                <strong id="restockOrder">0 trays</strong>
-            </div>
-            <div>
-                <span>Estimated Cost</span>
-                <strong id="restockCost">KSh 0</strong>
-            </div>
+            <div><span>Current Stock</span><strong id="restockCurrent">30 trays</strong></div>
+            <div><span>Target Stock</span><strong id="restockTarget">30 trays</strong></div>
+            <div><span>Trays to Order</span><strong id="restockOrder">0 trays</strong></div>
+            <div><span>Estimated Cost</span><strong id="restockCost">KSh 0</strong></div>
         </div>
 
-        <p id="restockMessage" class="restock-message">
-            Your stock is at the target level.
-        </p>
-
-        <button type="button" id="restockBtn" class="light-btn">
-            Record Suggested Restock
-        </button>
+        <p id="restockMessage" class="restock-message">Your stock is at the target level.</p>
+        <button type="button" id="restockBtn" class="light-btn">Record Suggested Restock</button>
     </section>
 
     <section class="two-columns">
-
         <div class="panel">
             <h2>🛒 Record a Sale</h2>
-
             <form id="saleForm">
-                <label>
-                    Customer name (optional)
-                    <input type="text" id="customerName"
-                           placeholder="Customer name">
+                <label>Customer name (optional)
+                    <input type="text" id="customerName" placeholder="Customer name">
                 </label>
-
-                <label>
-                    Quantity sold
-                    <input type="number" id="saleQuantity"
-                           min="1" step="1" required>
+                <label>Quantity sold
+                    <input type="number" id="saleQuantity" min="1" step="1" required>
                 </label>
-
-                <label>
-                    Sell as
+                <label>Sell as
                     <select id="saleUnit">
                         <option value="eggs">Individual eggs</option>
                         <option value="half">Half tray (15 eggs)</option>
                         <option value="tray">Full tray (30 eggs)</option>
                     </select>
                 </label>
-
-                <label>
-                    Selling price per tray (KSh)
-                    <input type="number" id="salePrice"
-                           min="0.01" step="0.01" required>
+                <label>Selling price per tray (KSh)
+                    <input type="number" id="salePrice" min="0.01" step="0.01" required>
                 </label>
-
-                <div class="preview">
-                    Estimated total: <strong id="salePreview">KSh 0</strong>
-                </div>
-
+                <div class="preview">Estimated total: <strong id="salePreview">KSh 0</strong></div>
                 <button type="submit" class="primary-btn">Save Sale</button>
             </form>
         </div>
 
         <div class="panel">
             <h2>📦 Record Egg Delivery</h2>
-
             <form id="deliveryForm">
-                <label>
-                    Number of full trays received
-                    <input type="number" id="deliveryTrays"
-                           min="1" step="1" required>
+                <label>Number of full trays received
+                    <input type="number" id="deliveryTrays" min="1" step="1" required>
                 </label>
-
-                <label>
-                    Buying price per tray (KSh)
-                    <input type="number" id="deliveryPrice"
-                           min="0" step="0.01" required>
+                <label>Buying price per tray (KSh)
+                    <input type="number" id="deliveryPrice" min="0" step="0.01" required>
                 </label>
-
-                <label>
-                    Supplier (optional)
-                    <input type="text" id="supplierName"
-                           placeholder="Supplier name">
+                <label>Supplier (optional)
+                    <input type="text" id="supplierName" placeholder="Supplier name">
                 </label>
-
-                <button type="submit" class="primary-btn">
-                    Record Delivery
-                </button>
+                <button type="submit" class="primary-btn">Record Delivery</button>
             </form>
         </div>
 
         <div class="panel">
             <h2>🥚 Record Broken or Lost Eggs</h2>
-
             <form id="lossForm">
-                <label>
-                    Number of eggs lost
-                    <input type="number" id="lossQuantity"
-                           min="1" step="1" required>
+                <label>Number of eggs lost
+                    <input type="number" id="lossQuantity" min="1" step="1" required>
                 </label>
-
-                <label>
-                    Reason
-                    <input type="text" id="lossReason"
-                           placeholder="Broken, rotten, damaged..." required>
+                <label>Reason
+                    <input type="text" id="lossReason" placeholder="Broken, rotten, damaged..." required>
                 </label>
-
-                <button type="submit" class="primary-btn">
-                    Record Loss
-                </button>
+                <button type="submit" class="primary-btn">Record Loss</button>
             </form>
         </div>
 
         <div class="panel">
             <h2>💸 Record Business Expense</h2>
-
             <form id="expenseForm">
-                <label>
-                    Expense description
-                    <input type="text" id="expenseDescription"
-                           placeholder="Transport, packaging..." required>
+                <label>Expense description
+                    <input type="text" id="expenseDescription" placeholder="Transport, packaging..." required>
                 </label>
-
-                <label>
-                    Amount (KSh)
-                    <input type="number" id="expenseAmount"
-                           min="0.01" step="0.01" required>
+                <label>Amount (KSh)
+                    <input type="number" id="expenseAmount" min="0.01" step="0.01" required>
                 </label>
-
-                <button type="submit" class="primary-btn">
-                    Save Expense
-                </button>
+                <button type="submit" class="primary-btn">Save Expense</button>
             </form>
         </div>
-
     </section>
 
     <section class="panel">
@@ -240,24 +167,34 @@
         </div>
 
         <div class="summary-grid">
-            <div>
-                <span>All-Time Sales</span>
-                <strong id="allSales">KSh 0</strong>
-            </div>
-            <div>
-                <span>All-Time Purchases</span>
-                <strong id="allPurchases">KSh 0</strong>
-            </div>
-            <div>
-                <span>All-Time Expenses</span>
-                <strong id="allExpenses">KSh 0</strong>
-            </div>
+            <div><span>All-Time Sales</span><strong id="allSales">KSh 0</strong></div>
+            <div><span>All-Time Purchases</span><strong id="allPurchases">KSh 0</strong></div>
+            <div><span>All-Time Expenses</span><strong id="allExpenses">KSh 0</strong></div>
         </div>
 
         <p class="muted note">
-            These figures are recorded totals, not a full accounting profit
-            calculation. Unsold stock, credit sales and supplier balances are
-            not included in this basic version.
+            These figures show recorded totals. Purchases are deliveries received;
+            profit is calculated separately below.
+        </p>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading">
+            <div>
+                <h2>📈 Profit &amp; Loss Calculator</h2>
+                <p class="muted">Track sales revenue, cost of eggs sold, expenses and estimated profit.</p>
+            </div>
+        </div>
+
+        <div class="summary-grid">
+            <div><span>Total Sales Revenue</span><strong id="profitRevenue">KSh 0.00</strong></div>
+            <div><span>Cost of Eggs Sold</span><strong id="profitCost">KSh 0.00</strong></div>
+            <div><span>Business Expenses</span><strong id="profitExpenses">KSh 0.00</strong></div>
+            <div><span>Estimated Net Profit</span><strong id="netProfit">KSh 0.00</strong></div>
+        </div>
+
+        <p id="profitNote" class="muted note">
+            Estimated profit = sales revenue minus cost of eggs sold minus recorded expenses.
         </p>
     </section>
 
@@ -267,16 +204,14 @@
                 <h2>📜 Recent Transactions</h2>
                 <p class="muted">Your latest sales, deliveries, losses and expenses.</p>
             </div>
-            <button type="button" id="exportBtn" class="secondary-btn">
-                Export Backup
-            </button>
+            <button type="button" id="exportBtn" class="secondary-btn">Export Backup</button>
         </div>
 
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
-                        <th>Date & Time</th>
+                        <th>Date &amp; Time</th>
                         <th>Type</th>
                         <th>Details</th>
                         <th>Quantity</th>
@@ -284,9 +219,7 @@
                     </tr>
                 </thead>
                 <tbody id="transactionsBody">
-                    <tr>
-                        <td colspan="5">No transactions recorded yet.</td>
-                    </tr>
+                    <tr><td colspan="5">No transactions recorded yet.</td></tr>
                 </tbody>
             </table>
         </div>
